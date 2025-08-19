@@ -30,10 +30,10 @@ jobs:
 
       # Build project
       - name: Build with MSBuild
-        run: msbuild YourSolution.sln /p:Configuration=Release
+        run: msbuild AsyncAwaitTask.sln /p:Configuration=Release
 
       # Run Console App
       - name: Run Console App
         run: |
-          cd YourProject\bin\Release
+          cd AsyncAwaitTask\bin\Release
           .\AsyncAwaitTask.exe
