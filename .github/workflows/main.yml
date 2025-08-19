@@ -26,7 +26,7 @@ jobs:
 
       # Restore packages
       - name: Restore NuGet packages
-        run: nuget restore YourSolution.sln
+        run: nuget restore AsyncAwaitTask.sln
 
       # Build project
       - name: Build with MSBuild
@@ -36,4 +36,4 @@ jobs:
       - name: Run Console App
         run: |
           cd YourProject\bin\Release
-          .\YourConsoleApp.exe
+          .\AsyncAwaitTask.exe
