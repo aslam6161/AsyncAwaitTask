@@ -1,0 +1,35 @@
+name: Run .NET Console App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup .NET (adjust version if needed)
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Build project
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # Run console app (adjust path if not in root)
+      - name: Run Console App
+        run: dotnet run --project ./YourProjectFolder/YourConsoleApp.csproj --no-build
