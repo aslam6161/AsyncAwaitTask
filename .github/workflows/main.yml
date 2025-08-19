@@ -1,35 +1,39 @@
-name: Run .NET Console App
+name: Build and Run .NET Framework Console App
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch: # allow manual trigger
+  workflow_dispatch: # manual trigger
 
 jobs:
   build-and-run:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       # Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup .NET (adjust version if needed)
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
+      # Setup MSBuild (comes preinstalled on windows-latest)
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-      # Restore dependencies
-      - name: Restore dependencies
-        run: dotnet restore
+      # Setup NuGet
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      # Restore packages
+      - name: Restore NuGet packages
+        run: nuget restore YourSolution.sln
 
       # Build project
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
+      - name: Build with MSBuild
+        run: msbuild YourSolution.sln /p:Configuration=Release
 
-      # Run console app (adjust path if not in root)
+      # Run Console App
       - name: Run Console App
-        run: dotnet run --project ./YourProjectFolder/YourConsoleApp.csproj --no-build
+        run: |
+          cd YourProject\bin\Release
+          .\YourConsoleApp.exe
